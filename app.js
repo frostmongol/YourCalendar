@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressSession = require('express-session')
+const MongoStore = require('connect-mongo')(expressSession);
 var expressValidator = require('express-validator')
 var mongo = require('mongodb');
 
@@ -14,12 +15,12 @@ var app = express();
 
 const TWO_HOURS = 1000 * 60 * 60 * 20;
 
-const {
-  SESS_SECRET = 'WelcomeToStayHungry',
-  SESS_NAME = 'sid',
-  SESS_LIFETIME = TWO_HOURS,
-  IN_PROD = false
-} = process.env
+const SESS_SECRET = process.env.SECRET || 'defaultsecret'
+const SESS_NAME = process.env.SESS_NAME || 'sid'
+const SESS_LIFETIME = process.env.SESS_LIFETIME || TWO_HOURS
+const IN_PROD = process.env.IN_PROD || false
+
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost"
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +33,7 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(expressSession({secret: SESS_SECRET, saveUninitialized: false, resave: false, name: SESS_NAME, cookie: {
+app.use(expressSession({secret: SESS_SECRET, store: new MongoStore({ url: MONGODB_URI }), saveUninitialized: false, resave: false, name: SESS_NAME, cookie: {
   maxAge: SESS_LIFETIME,
   secure: IN_PROD
 }}));
