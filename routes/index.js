@@ -499,7 +499,7 @@ const redirectcalendar = (req, res, next) => {
 }
 
 /* GET home page. */
-router.get('/', redirectcalendar, function(req, res, next) {
+router.get('/', redirectCalendar, function(req, res, next) {
   errors = req.session.errors;
   req.session.errors = null;
   res.render('index', {success: false, errors: errors});
@@ -511,7 +511,7 @@ router.get('/signup', function(req, res, next) {
   res.render('signup', {success: false, errors: errors});
 });
 
-router.post('/signup', redirectcalendar, function(req, res) {
+router.post('/signup', redirectCalendar, function(req, res) {
   const username = req.body.username
   const password = req.body.password
   const confirmPassword = req.body.confirmPassword
@@ -546,7 +546,7 @@ router.post('/signup', redirectcalendar, function(req, res) {
   }
 })
 
-router.post('/', redirectcalendar, function(req, res) {
+router.post('/', redirectCalendar, function(req, res) {
   const username = req.body.username
   const password = req.body.password
 
