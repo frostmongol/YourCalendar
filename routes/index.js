@@ -4,8 +4,10 @@ var mongodb = require('mongodb');
 var mongoose = require('mongoose')
 var bcrypt = require('bcryptjs')
 
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost"
+
 //Dabatase Handling
-mongoose.connect("mongodb://localhost/calender")
+mongoose.connect(MONGODB_URI)
 
 mongoose.connection.once('open', function() {
   console.log('Connection successful')
