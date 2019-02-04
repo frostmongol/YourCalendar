@@ -5,7 +5,7 @@
     $(document).ready(function() {
 
       function daysInMonth (month, year) {
-        return new Date(year, month, 0).getDate();
+        return new Date(year, month+1, 0).getDate();
       }
 
       const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -15,7 +15,8 @@
       date = new Date;
       date.date = 0;
       offset = date.getDay();
-      for (i = offset, x=1; i<daysInMonth(date.getMonth(), date.getYear()); i++, x++) {
+      console.log(daysInMonth(date.getMonth()+1, date.getYear()))
+      for (i = offset, x=1; i <= daysInMonth(date.getMonth(), date.getYear()); i++, x++) {
         $('.day:nth-child(' + i + ')').prepend("<div class='calenderNumber'>" + x + "</div>")
       }
       
