@@ -17,7 +17,7 @@
       offset = date.getDay();
       console.log(daysInMonth(date.getMonth()+1, date.getYear()))
       for (i = offset, x=1; i <= daysInMonth(date.getMonth(), date.getYear()); i++, x++) {
-        $('.day:nth-child(' + i + ')').prepend("<div class='calenderNumber'>" + x + "</div>")
+        $('.day:nth-child(' + i + ')').prepend("<div class='calendarNumber'>" + x + "</div>")
       }
       
       //Set up month display
@@ -57,7 +57,7 @@
   </div>
 
   <div id="backgroundShade"><div>
-  <div id="logo">Calender</div>
+  <div id="logo">calendar</div>
     <div id="mainContainer" style="width: 70%">
         <div id="dayOfWeekContainer">
           <div class="weekDay">Sunday</div>
@@ -68,9 +68,9 @@
           <div class="weekDay">Friday</div>
           <div class="weekDay">Saturday</div>
         </div>
-        <div id="calenderContainer">
+        <div id="calendarContainer">
             <!--Render Tasks-->
-            <%  month = calender[date.getMonth()] 
+            <%  month = calendar[date.getMonth()] 
                 date.date = 0;
                 offset = date.getDay();
                 for (i=0;i<35;i++) {

@@ -18,7 +18,7 @@ mongoose.connection.once('open', function() {
 var accountSchema = new mongoose.Schema({
   username: {type: String, required: true, index: {unique: true}},
   password: {type: String, required: true},
-  calender: {type: Array, default: [
+  calendar: {type: Array, default: [
     {
         name: "january",
         days: [
@@ -490,16 +490,16 @@ const redirectLogin = (req, res, next) => {
   }
 }
 
-const redirectCalender = (req, res, next) => {
+const redirectcalendar = (req, res, next) => {
   if (req.session.userId) {
-    res.redirect('/mycalender')
+    res.redirect('/mycalendar')
   } else {
     next()
   }
 }
 
 /* GET home page. */
-router.get('/', redirectCalender, function(req, res, next) {
+router.get('/', redirectcalendar, function(req, res, next) {
   errors = req.session.errors;
   req.session.errors = null;
   res.render('index', {success: false, errors: errors});
@@ -511,7 +511,7 @@ router.get('/signup', function(req, res, next) {
   res.render('signup', {success: false, errors: errors});
 });
 
-router.post('/signup', redirectCalender, function(req, res) {
+router.post('/signup', redirectcalendar, function(req, res) {
   const username = req.body.username
   const password = req.body.password
   const confirmPassword = req.body.confirmPassword
@@ -546,7 +546,7 @@ router.post('/signup', redirectCalender, function(req, res) {
   }
 })
 
-router.post('/', redirectCalender, function(req, res) {
+router.post('/', redirectcalendar, function(req, res) {
   const username = req.body.username
   const password = req.body.password
 
@@ -567,7 +567,7 @@ router.post('/', redirectCalender, function(req, res) {
             if (err) throw err;
             if (isMatch == true) {
               req.session.userId = user._id
-              res.redirect('mycalender')
+              res.redirect('mycalendar')
             } else {
                 err = {
                   location: 'body',
@@ -590,7 +590,7 @@ router.post('/', redirectCalender, function(req, res) {
   }
 })
 
-router.post('/mycalender', function(req, res) {
+router.post('/mycalendar', function(req, res) {
   const todo = req.body.todo;
   const day = req.body.day;
   const month = req.body.month;
@@ -598,23 +598,23 @@ router.post('/mycalender', function(req, res) {
   Account.findOne({_id: req.session.userId}, function(err, user) {
     if (err) throw err;
     var d = new Date();
-    oldCalender = user.calender;
-    oldCalender[month].days[day - 1].push(todo)
-    user.calender = oldCalender;
-    user.markModified('calender');
+    oldcalendar = user.calendar;
+    oldcalendar[month].days[day - 1].push(todo)
+    user.calendar = oldcalendar;
+    user.markModified('calendar');
     user.save(function (err, updated) {
       if (err) throw err;
-      res.redirect('mycalender')
-      newCalender = updated;
+      res.redirect('mycalendar')
+      newcalendar = updated;
     })
   })
 })
 
-router.get('/mycalender', redirectLogin, function(req,res) {
+router.get('/mycalendar', redirectLogin, function(req,res) {
   Account.findOne({_id: req.session.userId}, function(err, user) {
     if (err) throw err;
     var d = new Date();
-    res.render('mycalender', {userId: req.session.userId, calender: user.calender, date: d})
+    res.render('mycalendar', {userId: req.session.userId, calendar: user.calendar, date: d})
     req.session.errors = null;
   })
   
