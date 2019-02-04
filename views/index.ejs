@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./components/head'); -%>
+  <body id='barba-wrapper'>
+  <div id="backgroundShade"><div>
+  <div id="logo">Calender</div>
+    <div id="mainContainer" class="barba-container">
+      <form method="post">
+        <input type="text" name="username" id="username" class='textInput' placeholder="Username"><br>
+        <input type="password" name="password" id="password" class='textInput' placeholder="Password"><br>
+        <%- include('./components/errorContainer'); -%>
+        <div class="centerContainer">
+          <div class="loginLink"><a href="/signup">Register</a> an account?</div>
+          <input type="submit" value="Submit" id="loginButton">
+          <div class="loginLink"><a class="loginLink">Forgot</a> your password?</div>
+        </div>
+      </form>
+    </div>
+    <div id="bottomRibbon">
+    <div class="bottomRibbonText" id="welcome">A <b>STAYHUNGRY</b> Project</div>
+    <div class="bottomRibbonText" id="legal">&copy Gray Lewis 2019</div>
+    </div>
+</html>

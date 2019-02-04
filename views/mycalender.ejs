@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./components/head'); -%>
+  <script>
+    $(document).ready(function() {
+
+      function daysInMonth (month, year) {
+        return new Date(year, month, 0).getDate();
+      }
+
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      date = new Date;
+      date.date = 0;
+      offset = date.getDay();
+      for (i = offset, x=1; i<daysInMonth(date.getMonth(), date.getYear()); i++, x++) {
+        $('.day:nth-child(' + i + ')').prepend("<div class='calenderNumber'>" + x + "</div>")
+      }
+      
+      //Set up month display
+      $('#logo').text(monthNames[date.getMonth()]);
+
+      //Dialog Popup
+      $('.day').click(function(e) {
+        $("#shadow").fadeIn(200,function() {
+          //Pass target day information]
+          
+          $('#createTodo').append('');
+          $('#createToDo').append('<input type="hidden" name="month" value="'+ date.getMonth() +'" />' + '<input type="hidden" name="day" value="'+ e.target.firstChild.textContent +'" />');
+
+          $(document).keyup(function(e) {
+              if (e.key === "Escape") { 
+                $('#shadow').fadeOut(200)
+              }
+          });
+
+          $('#exitMenu').click(function() {
+            $('#shadow').fadeOut()
+          })
+        });
+      })
+      $('#createToDo').submit(function() {$('#shadow').fadeOut()})
+    });
+  </script>
+  <body>
+  <div id="shadow">
+    <div id="toDoContainer">
+    <div id="exitMenu"><img src="./images/exit.png"></div>
+      <form id="createToDo" method="POST">
+        <div class="title">What needs to get done?</div>
+        <input type="text" name="todo" class="textInput">
+      </form>
+    </div>
+  </div>
+
+  <div id="backgroundShade"><div>
+  <div id="logo">Calender</div>
+    <div id="mainContainer" style="width: 70%">
+        <div id="dayOfWeekContainer">
+          <div class="weekDay">Sunday</div>
+          <div class="weekDay">Monday</div>
+          <div class="weekDay">Tuesday</div>
+          <div class="weekDay">Wednesday</div>
+          <div class="weekDay">Thursday</div>
+          <div class="weekDay">Friday</div>
+          <div class="weekDay">Saturday</div>
+        </div>
+        <div id="calenderContainer">
+            <!--Render Tasks-->
+            <%  month = calender[date.getMonth()] 
+                date.date = 0;
+                offset = date.getDay();
+                for (i=0;i<35;i++) {
+                    %> <div class='day'>
+                      <div class="toDoItem"><% if(month.days[i-offset+1]) { %> 
+                        <% for (j=0;j<month.days[i-offset+1].length;j++) { %>
+                         <div><%= month.days[i-offset+1][j] %></div>
+                        <% } %>
+                      <% } %></div>
+                    </div>
+                <% } %>
+
+        </div>
+    </div>
+    <div id="bottomRibbon">
+      <a class="buttonLink" href="/logout"><div class="button">Logout</div></a>
+      <div class="insetButton">View Help</div>
+      <div class="bottomRibbonText" id="legal">&copy Gray Lewis 2019</div>
+    </div>
+  </body>
+</html>

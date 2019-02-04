@@ -1,0 +1,23 @@
+<%- include('./components/head'); -%>
+<body>
+  <div id="backgroundShade"><div>
+  <div id="logo">Calender</div>
+    <div id="mainContainer">
+        <form method="post">
+            <input type="text" name="username" id="username" class='textInput' placeholder="Email" ><br>
+            <input type="password" name="password" id="password" class='textInput' placeholder="Password"><br>
+            <input type="password" name="confirmPassword" id="confirmPassword" class='textInput' placeholder="Confirm Password"><br>
+            <%- include('./components/errorContainer'); -%>
+        <div class="centerContainer">
+          <div class="loginLink"><a href="/signup">Register</a> an account?</div>
+          <input type="submit" value="Sign Up">
+          <div class="loginLink"><a class="loginLink">Forgot</a> your password?</div>
+        </div>
+        </form>
+    </div>
+    <div id="bottomRibbon">
+      <div class="bottomRibbonText" id="welcome">A STAYHUNGRY Project</div>
+      <div class="bottomRibbonText" id="legal">&copy Gray Lewis 2019</div>
+    </div>
+</body>
+    
