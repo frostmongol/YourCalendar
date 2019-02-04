@@ -490,7 +490,7 @@ const redirectLogin = (req, res, next) => {
   }
 }
 
-const redirectcalendar = (req, res, next) => {
+const redirectCalendar = (req, res, next) => {
   if (req.session.userId) {
     res.redirect('/mycalendar')
   } else {
