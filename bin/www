@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('calender:server');
+var debug = require('debug')('calendar:server');
 var http = require('http');
 
 /**
