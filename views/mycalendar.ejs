@@ -12,11 +12,14 @@
         "July", "August", "September", "October", "November", "December"
       ];
 
-      date = new Date;
-      date.date = 0;
-      offset = date.getDay();
+      date = new Date();
+      date.setDate(1);
+      offset = date.getDay() + 1;
+      console.log(date)
+      console.log(offset)
+
       console.log(daysInMonth(date.getMonth()+1, date.getYear()))
-      for (i = offset, x=1; i <= daysInMonth(date.getMonth(), date.getYear()); i++, x++) {
+      for (i = offset, x=1; i < daysInMonth(date.getMonth(), date.getYear()) + offset; i++, x++) {
         $('.day:nth-child(' + i + ')').prepend("<div class='calendarNumber'>" + x + "</div>")
       }
       
