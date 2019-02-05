@@ -73,14 +73,15 @@
         </div>
         <div id="calendarContainer">
             <!--Render Tasks-->
-            <%  month = calendar[date.getMonth()] 
-                date.date = 0;
+            <%  month = calendar[date.getMonth()]
+                date = new Date();
+                date.setDate(1);
                 offset = date.getDay();
                 for (i=0;i<35;i++) {
                     %> <div class='day'>
-                      <div class="toDoItem"><% if(month.days[i-offset+1]) { %> 
-                        <% for (j=0;j<month.days[i-offset+1].length;j++) { %>
-                         <div><%= month.days[i-offset+1][j] %></div>
+                      <div class="toDoItem"><% ;if(month.days[i-offset]) { %> 
+                        <% for (j=0;j<month.days[i-offset].length;j++) { %>
+                         <div><%= month.days[i-offset][j] %></div>
                         <% } %>
                       <% } %></div>
                     </div>
