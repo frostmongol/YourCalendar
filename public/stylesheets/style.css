@@ -21,6 +21,23 @@ a {
   background-color: #282E46;
   width: 100%;
   top: 0;
+  z-index: -1;
+}
+
+.arrow {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#leftArrow {
+  background-image: url(../images/arrow-left.png);
+  width: 96px;
+  height: 96px;
+}
+#rightArrow {
+  background-image: url(../images/arrow-right.png);
+  width: 96px;
+  height: 96px;
 }
 
 #mainContainer {
@@ -211,4 +228,10 @@ form {
 .bottomRibbonText {
   line-height: 33px;
   color: #666666;
+}
+
+#contentContainer {
+  display: flex;
+  width: calc(70% + 200px);
+  margin: auto;
 }

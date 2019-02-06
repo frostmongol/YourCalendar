@@ -22,9 +22,6 @@
       for (i = offset, x=1; i < daysInMonth(date.getMonth(), date.getYear()) + offset; i++, x++) {
         $('.day:nth-child(' + i + ')').prepend("<div class='calendarNumber'>" + x + "</div>")
       }
-      
-      //Set up month display
-      $('#logo').text(monthNames[date.getMonth()]);
 
       //Dialog Popup
       $('.day').click(function(e) {
@@ -51,17 +48,35 @@
   <body>
   <div id="shadow">
     <div id="toDoContainer">
-    <div id="exitMenu"><img src="./images/exit.png"></div>
+    <div id="exitMenu"><img src="../images/exit.png"></div>
       <form id="createToDo" method="POST">
         <div class="title">What needs to get done?</div>
         <input type="text" name="todo" class="textInput">
       </form>
     </div>
+    </div>
   </div>
+  <div id="backgroundShade"></div>
+  <div id="logo"><%
 
-  <div id="backgroundShade"><div>
-  <div id="logo">calendar</div>
-    <div id="mainContainer" style="width: 70%">
+    function monthCycle(n) {
+      if (n<0) {return 12-(n*-1)} else {return n % 12}
+    }
+
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"]
+    if (userMonth) { %>
+     <%= monthNames[userMonth] %> <% } else { %> <%=monthNames[date.getMonth()] %> <%} %>
+  </div>
+  <div id="contentContainer">
+    <% if (userMonth) { %>
+      <a class="arrow" href="<%= '/mycalendar/' + (monthCycle(parseInt(userMonth)-1)) %> ">
+    <% } else { %>
+      <a class="arrow" href="<%= '/mycalendar/' + (monthCycle(date.getMonth()-1)) %> ">
+    <% } %>
+    <div class="arrow" id="leftArrow"></div>
+    </a>
+    <div id="mainContainer" style="width: calc(100% - 200px)">
         <div id="dayOfWeekContainer">
           <div class="weekDay">Sunday</div>
           <div class="weekDay">Monday</div>
@@ -73,7 +88,8 @@
         </div>
         <div id="calendarContainer">
             <!--Render Tasks-->
-            <%  month = calendar[date.getMonth()]
+            <%  
+                if (userMonth != false) {month = calendar[userMonth]} else {month = calendar[date.getMonth()]}
                 date = new Date();
                 date.setDate(1);
                 offset = date.getDay();
@@ -89,6 +105,14 @@
 
         </div>
     </div>
+    <% if (userMonth) { %>
+      <a class="arrow" href="<%= '/mycalendar/' + (monthCycle(parseInt(userMonth)+1)) %> ">
+    <% } else { %>
+      <a class="arrow" href="<%= '/mycalendar/' + (monthCycle(date.getMonth()+1)) %> ">
+    <% } %>
+    <div class="arrow" id="rightArrow"></div>
+    </a>
+  </div>
     <div id="bottomRibbon">
       <a class="buttonLink" href="/logout"><div class="button">Logout</div></a>
       <div class="insetButton">View Help</div>

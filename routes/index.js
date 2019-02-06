@@ -610,14 +610,43 @@ router.post('/mycalendar', function(req, res) {
   })
 })
 
+router.post('/mycalendar/:month', redirectLogin, function(req, res) {
+  const todo = req.body.todo;
+  const day = req.body.day;
+  const month = req.params.month;
+
+  Account.findOne({_id: req.session.userId}, function(err, user) {
+    if (err) throw err;
+    var d = new Date();
+    oldcalendar = user.calendar;
+    oldcalendar[month].days[day - 1].push(todo)
+    user.calendar = oldcalendar;
+    user.markModified('calendar');
+    user.save(function (err, updated) {
+      if (err) throw err;
+      res.redirect('/mycalendar/' + month)
+      newcalendar = updated;
+    })
+  })
+});
+
 router.get('/mycalendar', redirectLogin, function(req,res) {
   Account.findOne({_id: req.session.userId}, function(err, user) {
     if (err) throw err;
     var d = new Date();
-    res.render('mycalendar', {userId: req.session.userId, calendar: user.calendar, date: d})
+    res.render('mycalendar', {userId: req.session.userId, calendar: user.calendar, date: d, userMonth: false})
     req.session.errors = null;
   })
   
+});
+
+router.get('/mycalendar/:month', redirectLogin, function(req, res) {
+  Account.findOne({_id: req.session.userId}, function(err, user) {
+    if (err) throw err;
+    var d = new Date();
+    res.render('mycalendar', {userId: req.session.userId, calendar: user.calendar, date: d, userMonth: req.params.month})
+    req.session.errors = null;
+  })
 });
 
 router.get('/logout', function(req,res) {
