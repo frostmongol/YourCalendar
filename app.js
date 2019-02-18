@@ -20,7 +20,7 @@ const SESS_NAME = process.env.SESS_NAME || 'sid'
 const SESS_LIFETIME = process.env.SESS_LIFETIME || TWO_HOURS
 const IN_PROD = process.env.IN_PROD || false
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost"
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/calendar"
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

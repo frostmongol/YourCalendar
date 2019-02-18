@@ -4,7 +4,7 @@ var mongodb = require('mongodb');
 var mongoose = require('mongoose')
 var bcrypt = require('bcryptjs')
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost"
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/calendar"
 
 //Dabatase Handling
 mongoose.connect(MONGODB_URI)
@@ -590,30 +590,12 @@ router.post('/', redirectCalendar, function(req, res) {
   }
 })
 
-router.post('/mycalendar', function(req, res) {
-  const todo = req.body.todo;
-  const day = req.body.day;
-  const month = req.body.month;
-
-  Account.findOne({_id: req.session.userId}, function(err, user) {
-    if (err) throw err;
-    var d = new Date();
-    oldcalendar = user.calendar;
-    oldcalendar[month].days[day - 1].push(todo)
-    user.calendar = oldcalendar;
-    user.markModified('calendar');
-    user.save(function (err, updated) {
-      if (err) throw err;
-      res.redirect('mycalendar')
-      newcalendar = updated;
-    })
-  })
-})
-
 router.post('/mycalendar/:month', redirectLogin, function(req, res) {
   const todo = req.body.todo;
-  const day = req.body.day;
-  const month = req.params.month;
+  const day = parseInt(req.body.day);
+  const month = parseInt(req.body.month);
+  console.log('todo: ' + todo + ' day: ' + day + ' month: ' + month)
+  if (typeof day == "number" && typeof month == "number") {
 
   Account.findOne({_id: req.session.userId}, function(err, user) {
     if (err) throw err;
@@ -628,16 +610,14 @@ router.post('/mycalendar/:month', redirectLogin, function(req, res) {
       newcalendar = updated;
     })
   })
+
+  } else {throw new Error("Invalid data")}
 });
 
 router.get('/mycalendar', redirectLogin, function(req,res) {
-  Account.findOne({_id: req.session.userId}, function(err, user) {
-    if (err) throw err;
-    var d = new Date();
-    res.render('mycalendar', {userId: req.session.userId, calendar: user.calendar, date: d, userMonth: false})
-    req.session.errors = null;
-  })
-  
+  var d = new Date();
+  var currentMonth = d.getMonth()
+  res.redirect('/mycalendar/' + currentMonth)
 });
 
 router.get('/mycalendar/:month', redirectLogin, function(req, res) {

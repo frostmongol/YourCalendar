@@ -21,7 +21,7 @@ a {
   background-color: #282E46;
   width: 100%;
   top: 0;
-  z-index: -1;
+  z-index: -100;
 }
 
 .arrow {
@@ -55,6 +55,11 @@ form {
   padding-top: 25px;
 }
 
+#createToDo {
+  width: 80%;
+  max-width: 350px;
+}
+
 #shadow {
   display: none;
   top: 0;
@@ -76,7 +81,7 @@ form {
 }
 
 .textInput {
-  width: calc(100% - 20px);
+  width: calc(100% - 24px);
   border: #282E46 solid 2px; 
   margin-bottom: 10px;
   border-radius: 3px;
@@ -156,12 +161,14 @@ form {
   width: calc((100% / 7) - 22px);
   padding: 10px;
   padding-top: 7px;
+  z-index: 3;
   flex-grow: 2;
   height: 100px;
   margin: 0;
   font: normal 12px Poppins;
   -webkit-transition: box-shadow .5s; /* Safari */
   transition: box-shadow .5s;
+  cursor: pointer;
 }
 
 .day:hover {
@@ -185,6 +192,7 @@ form {
   text-align: center;
   line-height: 33px;
   border-radius: 3px;
+  border: none;
 }
 
 .buttonLink {
@@ -233,5 +241,34 @@ form {
 #contentContainer {
   display: flex;
   width: calc(70% + 200px);
+  margin: auto;
+}
+
+.toDoListItem {
+  line-height: 36px;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  padding-left: 10px;
+  box-shadow: 0px 0px 3px rgb(0,0,0,.8);
+  border-radius: 3px;
+  width: calc(80% - 10px);
+  font-weight: bold;
+  max-width: 340px;
+  margin-bottom: 10px;
+}
+
+.deleteListItem {
+  margin-top: 6px;
+  margin-right: 6px;
+  width: 24px;
+  height: 24px;
+}
+
+#deleteToDo {
+  display: flex;
+}
+
+#deleteToDoSubmit {
   margin: auto;
 }

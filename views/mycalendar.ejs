@@ -7,42 +7,74 @@
       function daysInMonth (month, year) {
         return new Date(year, month+1, 0).getDate();
       }
-
+      
+      <% function monthCycle(n) {
+        if (n<0) {return 12-(n*-1)} else {return n % 12}
+      }
+  
       const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      ];
+      "July", "August", "September", "October", "November", "December"] 
 
       date = new Date();
       date.setDate(1);
-      offset = date.getDay() + 1;
-      console.log(date)
-      console.log(offset)
+      date.setMonth(userMonth)
+      offset = date.getDay();
 
-      console.log(daysInMonth(date.getMonth()+1, date.getYear()))
-      for (i = offset, x=1; i < daysInMonth(date.getMonth(), date.getYear()) + offset; i++, x++) {
+      %>
+
+      //Import current date information to browser
+      date = new Date();
+      date.setDate(1)
+      date.setMonth(<%= userMonth %>)
+      offset = date.getDay();
+
+      <%
+      if (userMonth) {
+      %>currentMonth = <%= userMonth %>; 
+        date.setMonth(currentMonth)
+        <%
+        
+      } else {currentMonth = date.getMonth()}
+      %>
+      
+      for (i=offset+1, x=1; i <= daysInMonth(date.getMonth(), date.getYear()) + offset; i++, x++) {
         $('.day:nth-child(' + i + ')').prepend("<div class='calendarNumber'>" + x + "</div>")
       }
 
       //Dialog Popup
       $('.day').click(function(e) {
+        dayClicked = parseInt($(this).text()) + offset;
+        toDoAmount = $(".day:nth-child(" + dayClicked + ")").find(".toDoItem").children().length
+          if (toDoAmount > 0) {
+            $(".day:nth-child(" + dayClicked + ")").find(".toDoItem").children().each(function() {
+              var $this = $(this);
+              $('#to-Dos').append("<div class='toDoListItem'><div>" + $this.html() + "</div><img class='deleteListItem' src='/images/exitBlack.png'></img></div>")
+            })
+          }
+        
         $("#shadow").fadeIn(200,function() {
           //Pass target day information]
           
-          $('#createTodo').append('');
-          $('#createToDo').append('<input type="hidden" name="month" value="'+ date.getMonth() +'" />' + '<input type="hidden" name="day" value="'+ e.target.firstChild.textContent +'" />');
+          console.log($(e.target).closest('.day').find('.calendarNumber').text())
+          $('#createToDo').append('<input type="hidden" name="month" value="'+ currentMonth +'" />' + '<input type="hidden" name="day" value="'+ $(e.target).closest('.day').find('.calendarNumber').text() +'" />');
 
           $(document).keyup(function(e) {
               if (e.key === "Escape") { 
-                $('#shadow').fadeOut(200)
+                $('#shadow').fadeOut(200, function() {
+                $('#to-Dos').empty()
+                })
               }
           });
-
+          
           $('#exitMenu').click(function() {
-            $('#shadow').fadeOut()
+            $('#shadow').fadeOut(200, function() {
+              $('#to-Dos').empty()
+            })
           })
         });
       })
-      $('#createToDo').submit(function() {$('#shadow').fadeOut()})
+      //Delete Handling
+    
     });
   </script>
   <body>
@@ -53,18 +85,16 @@
         <div class="title">What needs to get done?</div>
         <input type="text" name="todo" class="textInput">
       </form>
+      <div id="to-Dos">
+      </div>
+      <form id="deleteToDo" method="POST">
+        <button id="deleteToDoSubmit" class="button buttonLink">Confirm</button>
+      </form>
     </div>
     </div>
   </div>
   <div id="backgroundShade"></div>
   <div id="logo"><%
-
-    function monthCycle(n) {
-      if (n<0) {return 12-(n*-1)} else {return n % 12}
-    }
-
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"]
     if (userMonth) { %>
      <%= monthNames[userMonth] %> <% } else { %> <%=monthNames[date.getMonth()] %> <%} %>
   </div>
@@ -89,10 +119,14 @@
         <div id="calendarContainer">
             <!--Render Tasks-->
             <%  
-                if (userMonth != false) {month = calendar[userMonth]} else {month = calendar[date.getMonth()]}
+                month = calendar[userMonth]
+
                 date = new Date();
+                date.setMonth(userMonth)
                 date.setDate(1);
+
                 offset = date.getDay();
+                
                 for (i=0;i<35;i++) {
                     %> <div class='day'>
                       <div class="toDoItem"><% ;if(month.days[i-offset]) { %> 
