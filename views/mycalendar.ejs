@@ -56,7 +56,7 @@
         })
       }
       $('.day').click(function(e) {
-        //Delete Handling
+        //Delete Menu Handling
         dayClicked = parseInt($(this).text()) + offset;
         toDoAmount = $(".day:nth-child(" + dayClicked + ")").find(".toDoItem").children().length
           if (toDoAmount > 0) {
@@ -80,7 +80,7 @@
           $('#exitMenu').click(function() {
             exitMenu();
           })
-          //Delete Button Handling
+          //Delete Form Handling
           $(".deleteListItem").click(function(e) {
             if ($('#deleteToDo').is(":hidden")) {$('#deleteToDo').css('display', 'flex')}
             if (!$(e.target).closest('.toDoListItem').hasClass('marked')) {
@@ -89,7 +89,7 @@
               num = parseInt(num.substr(num.length - 1));
               
               currentArray.push(num)
-
+              console.log(currentArray)
               $("#deleteArrayCarrier").val(currentArray)
             } else {
               $(e.target).closest('.toDoListItem').removeClass('marked');
@@ -97,8 +97,13 @@
               num = parseInt(num.substr(num.length - 1));
 
               currentArray.splice(currentArray.indexOf(num), 1);
+
+              if (currentArray.length == 0) {
+                $('#deleteToDo').css('display', 'none')
+              }
+
+              $("#deleteArrayCarrier").val(currentArray)
             }
-            
           });
         });
       })

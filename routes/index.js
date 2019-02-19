@@ -639,13 +639,14 @@ router.post('/deleteTask', function(req, res) {
         array[index] = parseInt(array[index])
       }
     })
+
+    toDelete.sort(function(a,b){ return b - a; });
     console.log(toDelete)
   const day = parseInt(req.body.day);
   const month = parseInt(req.body.month);
   if (day != NaN && month != NaN) { 
     Account.findOne({_id: req.session.userId}, function(err, user) {
       if (err) throw err;
-      var d = new Date();
       oldcalendar = user.calendar;
       toDelete.forEach(function(part, index, array) { 
         oldcalendar[month].days[day - 1].splice(part, 1);
