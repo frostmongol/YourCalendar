@@ -50,12 +50,16 @@ a {
 }
 
 form {
-  width: 450px;
   margin: auto;
+}
+
+.accountForm {
+  width: 450px;
   padding-top: 25px;
 }
 
 #createToDo {
+  margin-top:30px;
   width: 80%;
   max-width: 350px;
 }
@@ -72,16 +76,20 @@ form {
 }
 
 #toDoContainer {
-  width: 50%;
-  padding-bottom: 40px;
+  width: 360px;
+  padding-bottom: 30px;
   background-color: white;
   margin: auto;
   margin-top: 200px;
   border-radius: 3px;
 }
 
+#to-Dos {
+  margin-bottom: 15px;
+}
+
 .textInput {
-  width: calc(100% - 26px);
+  width: calc(100% - 24px);
   border: #282E46 solid 2px; 
   margin-bottom: 10px;
   border-radius: 3px;
@@ -224,7 +232,7 @@ form {
 }
 
 .wideButton {
-  width: 150px;
+  width: 130px;
   background-color: red;
 }
 
