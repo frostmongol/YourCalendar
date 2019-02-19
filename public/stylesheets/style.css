@@ -224,7 +224,7 @@ form {
 }
 
 .wideButton {
-  width: 200px;
+  width: 150px;
   background-color: red;
 }
 
@@ -279,7 +279,7 @@ form {
 }
 
 #deleteToDo {
-  display: flex;
+  display: none;
 }
 
 #deleteToDoSubmit {

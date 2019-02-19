@@ -51,8 +51,8 @@
       function exitMenu() {
         $('#shadow').fadeOut(200, function() {
           $('#to-Dos').empty()
-          $('#dayHidden').remove();
-          $('#monthHidden').remove();
+          $('.dayHidden').remove();
+          $('.monthHidden').remove();
         })
       }
       $('.day').click(function(e) {
@@ -73,7 +73,7 @@
         $("#shadow").fadeIn(200,function() {
           //Pass target day information
           console.log($(e.target).closest('.day').find('.calendarNumber').text())
-          dayCarrier = '<input id="monthHidden" type="hidden" name="month" value="'+ currentMonth +'" />' + '<input id="dayHidden" type="hidden" name="day" value="'+ $(e.target).closest('.day').find('.calendarNumber').text() +'" />'
+          dayCarrier = '<input class="monthHidden" type="hidden" name="month" value="'+ currentMonth +'" />' + '<input class="dayHidden" type="hidden" name="day" value="'+ $(e.target).closest('.day').find('.calendarNumber').text() +'" />'
           $('#createToDo').append(dayCarrier);
           $('#deleteToDo').append(dayCarrier);
 
@@ -82,6 +82,7 @@
           })
           //Delete Button Handling
           $(".deleteListItem").click(function(e) {
+            if ($('#deleteToDo').is(":hidden")) {$('#deleteToDo').css('display', 'flex')}
             if (!$(e.target).closest('.toDoListItem').hasClass('marked')) {
               $(e.target).closest('.toDoListItem').addClass('marked');
               num = $(e.target).closest('.toDoListItem').attr('id');
