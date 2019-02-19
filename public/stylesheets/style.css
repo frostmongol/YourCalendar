@@ -81,7 +81,7 @@ form {
 }
 
 .textInput {
-  width: calc(100% - 24px);
+  width: calc(100% - 26px);
   border: #282E46 solid 2px; 
   margin-bottom: 10px;
   border-radius: 3px;
