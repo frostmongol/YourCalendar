@@ -27,7 +27,7 @@
       date.setDate(1)
       date.setMonth(<%= userMonth %>)
       offset = date.getDay();
-
+      //
       <%
       if (userMonth) {
       %>currentMonth = <%= userMonth %>; 
@@ -40,41 +40,67 @@
       for (i=offset+1, x=1; i <= daysInMonth(date.getMonth(), date.getYear()) + offset; i++, x++) {
         $('.day:nth-child(' + i + ')').prepend("<div class='calendarNumber'>" + x + "</div>")
       }
+      //Escape Key Shortcut
+      $(document).keyup(function(e) {
+          if (e.key === "Escape") { 
+            exitMenu();
+          }
+      });
 
       //Dialog Popup
+      function exitMenu() {
+        $('#shadow').fadeOut(200, function() {
+          $('#to-Dos').empty()
+          $('#dayHidden').remove();
+          $('#monthHidden').remove();
+        })
+      }
       $('.day').click(function(e) {
+        //Delete Handling
         dayClicked = parseInt($(this).text()) + offset;
         toDoAmount = $(".day:nth-child(" + dayClicked + ")").find(".toDoItem").children().length
           if (toDoAmount > 0) {
+            incrementCounter = 0;
             $(".day:nth-child(" + dayClicked + ")").find(".toDoItem").children().each(function() {
               var $this = $(this);
-              $('#to-Dos').append("<div class='toDoListItem'><div>" + $this.html() + "</div><img class='deleteListItem' src='/images/exitBlack.png'></img></div>")
+              $('#to-Dos').append("<div class='toDoListItem' id='toDoListItem" + incrementCounter + "'><div>" + $this.html() + "</div><img class='deleteListItem' src='/images/exitBlack.png'></img></div>")
+              incrementCounter += 1;
             })
           }
-        
-        $("#shadow").fadeIn(200,function() {
-          //Pass target day information]
-          
-          console.log($(e.target).closest('.day').find('.calendarNumber').text())
-          $('#createToDo').append('<input type="hidden" name="month" value="'+ currentMonth +'" />' + '<input type="hidden" name="day" value="'+ $(e.target).closest('.day').find('.calendarNumber').text() +'" />');
 
-          $(document).keyup(function(e) {
-              if (e.key === "Escape") { 
-                $('#shadow').fadeOut(200, function() {
-                $('#to-Dos').empty()
-                })
-              }
-          });
-          
+          currentArray = [];
+
+        $("#shadow").fadeIn(200,function() {
+          //Pass target day information
+          console.log($(e.target).closest('.day').find('.calendarNumber').text())
+          dayCarrier = '<input id="monthHidden" type="hidden" name="month" value="'+ currentMonth +'" />' + '<input id="dayHidden" type="hidden" name="day" value="'+ $(e.target).closest('.day').find('.calendarNumber').text() +'" />'
+          $('#createToDo').append(dayCarrier);
+          $('#deleteToDo').append(dayCarrier);
+
           $('#exitMenu').click(function() {
-            $('#shadow').fadeOut(200, function() {
-              $('#to-Dos').empty()
-            })
+            exitMenu();
           })
+          //Delete Button Handling
+          $(".deleteListItem").click(function(e) {
+            if (!$(e.target).closest('.toDoListItem').hasClass('marked')) {
+              $(e.target).closest('.toDoListItem').addClass('marked');
+              num = $(e.target).closest('.toDoListItem').attr('id');
+              num = parseInt(num.substr(num.length - 1));
+              
+              currentArray.push(num)
+
+              $("#deleteArrayCarrier").val(currentArray)
+            } else {
+              $(e.target).closest('.toDoListItem').removeClass('marked');
+              num = $(e.target).closest('.toDoListItem').attr('id');
+              num = parseInt(num.substr(num.length - 1));
+
+              currentArray.splice(currentArray.indexOf(num), 1);
+            }
+            
+          });
         });
       })
-      //Delete Handling
-    
     });
   </script>
   <body>
@@ -87,8 +113,9 @@
       </form>
       <div id="to-Dos">
       </div>
-      <form id="deleteToDo" method="POST">
-        <button id="deleteToDoSubmit" class="button buttonLink">Confirm</button>
+      <form id="deleteToDo" action="/deleteTask" method="POST">
+        <button id="deleteToDoSubmit" class="button buttonLink wideButton">Confirm Delete</button>
+        <input id="deleteArrayCarrier" type="hidden" name="delete">
       </form>
     </div>
     </div>

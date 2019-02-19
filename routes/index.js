@@ -594,8 +594,10 @@ router.post('/mycalendar/:month', redirectLogin, function(req, res) {
   const todo = req.body.todo;
   const day = parseInt(req.body.day);
   const month = parseInt(req.body.month);
-  console.log('todo: ' + todo + ' day: ' + day + ' month: ' + month)
-  if (typeof day == "number" && typeof month == "number") {
+  console.log(typeof month)
+
+  //Validation
+  if (day != NaN && month != NaN) {
 
   Account.findOne({_id: req.session.userId}, function(err, user) {
     if (err) throw err;
@@ -627,6 +629,36 @@ router.get('/mycalendar/:month', redirectLogin, function(req, res) {
     res.render('mycalendar', {userId: req.session.userId, calendar: user.calendar, date: d, userMonth: req.params.month})
     req.session.errors = null;
   })
+});
+
+router.post('/deleteTask', function(req, res) {
+  const toDelete = req.body.delete.split(',');
+    console.log(toDelete)
+    toDelete.forEach(function(part, index, array) {
+      if (parseInt(array[index]) == NaN) {throw new Error("Invalid data")} else {
+        array[index] = parseInt(array[index])
+      }
+    })
+    console.log(toDelete)
+  const day = parseInt(req.body.day);
+  const month = parseInt(req.body.month);
+  if (day != NaN && month != NaN) { 
+    Account.findOne({_id: req.session.userId}, function(err, user) {
+      if (err) throw err;
+      var d = new Date();
+      oldcalendar = user.calendar;
+      toDelete.forEach(function(part, index, array) { 
+        oldcalendar[month].days[day - 1].splice(part, 1);
+      })
+      user.calendar = oldcalendar;
+      user.markModified('calendar');
+      user.save(function (err, updated) {
+        if (err) throw err;
+        res.redirect('/mycalendar/' + month)
+        newcalendar = updated;
+      })
+    })
+  }
 });
 
 router.get('/logout', function(req,res) {

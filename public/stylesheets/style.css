@@ -169,6 +169,7 @@ form {
   -webkit-transition: box-shadow .5s; /* Safari */
   transition: box-shadow .5s;
   cursor: pointer;
+  overflow:hidden;
 }
 
 .day:hover {
@@ -222,6 +223,12 @@ form {
   background-color: #dddddd;
 }
 
+.wideButton {
+  width: 200px;
+  background-color: red;
+}
+
+
 #legal {
   flex-grow: 2;
   text-align: right;
@@ -263,6 +270,12 @@ form {
   margin-right: 6px;
   width: 24px;
   height: 24px;
+  cursor: pointer;
+
+}
+
+.toDoListItem.marked {
+  opacity: .5;
 }
 
 #deleteToDo {
@@ -271,4 +284,5 @@ form {
 
 #deleteToDoSubmit {
   margin: auto;
+  font-family: Poppins;
 }
