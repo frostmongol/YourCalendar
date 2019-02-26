@@ -563,18 +563,19 @@ router.post('/', redirectCalendar, function(req, res) {
     Account.findOne({username: username}, function(err, user) {
       if (err) throw err;
       if (user) {
+        error = {
+          location: 'body',
+          param: 'password',
+          msg: 'Password is invalid',
+        }
         user.comparePassword(password, function(err, isMatch) {
             if (err) throw err;
             if (isMatch == true) {
               req.session.userId = user._id
               res.redirect('mycalendar')
             } else {
-                err = {
-                  location: 'body',
-                  param: 'password',
-                  msg: 'Password is invalid',
-                }
-                  if (req.session.errors) {req.session.errors.push(err)} else {req.session.errors = [err]}
+                if (req.session.errors) {req.session.errors.push(error)} else {req.session.errors = [error];res.redirect('/')}
+                console.log(req.session.errors)
               }
         })
       } else {
